@@ -9,8 +9,36 @@ import {
 } from 'react-router-dom';
 import './App.css';
 import NewNote from './components/NewNote';
+import { useLocalStorage } from './hooks/useLocalStorage';
 
+export interface NoteData {
+  title: string;
+  markdown: string;
+  tags: Tag[];
+}
+
+export interface Note extends NoteData {
+  id: string;
+}
+
+export type Tag = {
+  id: string;
+  label: string;
+};
+
+export type RawNote = {
+  id: string;
+};
+
+export type RawNoteData = {
+  title: string;
+  markdown: string;
+  tagIds: string[];
+};
 function App() {
+  const [notes, setNotes] = useLocalStorage<RawNote[]>('NOTES', []);
+  const [tags, setTags] = useLocalStorage<Tag[]>('TAGS', []);
+
   return (
     <Container className="my-4">
       <Router>
